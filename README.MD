@@ -1,11 +1,12 @@
-#Run
+# Run
 ```shell
 npm install
 npm start
 ```
-#Use
+# Use
 
 GET localhost:3000/aapl - returns price and sector
+
 POST localhost:3000/ with payload:
 ```json
  {
@@ -35,3 +36,6 @@ POST localhost:3000/ with payload:
 ```
 returns allocations
 
+
+# Test
+Test API is running on api.perseus.ml
