@@ -1,5 +1,5 @@
-image: docker:latest
-pre_clone_script: apk add openssh-client
+image: docker:git
+#pre_clone_script: apk add openssh-client
 services:
   - docker:dind
 
