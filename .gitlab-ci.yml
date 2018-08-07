@@ -8,6 +8,7 @@ variables:
 
 stages:
   - package
+  - deploy
 
 
 docker-build:
@@ -16,3 +17,8 @@ docker-build:
     - docker build -t $DOCKER_REGISTRY/$IMAGE_NAME .
     - docker login -u $DOCKER_USER -p $DOCKER_PASS $DOCKER_REGISTRY
     - docker push $DOCKER_REGISTRY/$IMAGE_NAME
+    
+docker-deploy:
+    stage: deploy
+    script:
+        -ssh $SSH_USER@$DEPLOYMENT_SERVER "docker login -u ${DOCKER_USER} -p ${DOCKER_PASS} ${DOCKER_REGISTRY};docker pull ${DOCKER_REGISTRY}/${IMAGE_NAME};docker stop ${IMAGE_NAME};docker rm ${IMAGE_NAME};docker run --name=${IMAGE_NAME} -p ${CONTAINER_PORT}:${CONTAINER_PORT} --restart=always"
