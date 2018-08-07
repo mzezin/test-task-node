@@ -7,22 +7,12 @@ variables:
   DOCKER_DRIVER: overlay
 
 stages:
-  - build
   - package
 
-gradle-build:
-  image: java:8
-  stage: build
-  script:
-    - ./gradlew build
-  artifacts:
-    paths:
-      - build/*
 
 docker-build:
   stage: package
   script:
-    - cd build
     - docker build -t $IMAGE_NAME .
     - docker login -u $DOCKER_USER -p $DOCKER_PASS
     - docker push $IMAGE_NAME
