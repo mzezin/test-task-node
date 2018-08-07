@@ -20,5 +20,12 @@ stages:
     
 docker-deploy:
     stage: deploy
+    before_script:
+    - mkdir -p ~/.ssh
+    - echo "$DEPLOY_SERVER_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - eval "$(ssh-agent -s)"
+    - ssh-add ~/.ssh/id_rsa
+    - ssh-keyscan -H $DEPLOYMENT_SERVER >> ~/.ssh/known_hosts
     script:
         - ssh $SSH_USER@$DEPLOYMENT_SERVER "docker login -u ${DOCKER_USER} -p ${DOCKER_PASS} ${DOCKER_REGISTRY};docker pull ${DOCKER_REGISTRY}/${IMAGE_NAME};docker stop ${IMAGE_NAME};docker rm ${IMAGE_NAME};docker run --name=${IMAGE_NAME} -p ${CONTAINER_PORT}:${CONTAINER_PORT} --restart=always"
