@@ -1,13 +1,19 @@
-image: docker:dind
+image: docker:latest
 services:
-  - docker:dind
+    - docker:dind
 
 variables:
-  DOCKER_DRIVER: overlay
+    DOCKER_DRIVER: overlay
+
+before_script:
+    - docker version
+    - chkconfig docker on
+    - docker info <--HERE FAIL
+
 
 stages:
-  - package
-  - deploy
+#    - package
+#    - deploy
 
 
 docker-build:
