@@ -1,5 +1,4 @@
 image: docker:dind
-#pre_clone_script: apk add openssh-client
 services:
   - docker:dind
 
@@ -7,29 +6,26 @@ variables:
   DOCKER_DRIVER: overlay
 
 stages:
-#  - package
+  - package
   - deploy
 
 
-#docker-build:
-#  stage: package
-#  script:
-#    - docker build -t $DOCKER_REGISTRY/$IMAGE_NAME .
-#    - docker login -u $DOCKER_USER -p $DOCKER_PASS $DOCKER_REGISTRY
-#    - docker push $DOCKER_REGISTRY/$IMAGE_NAME
+docker-build:
+  stage: package
+  script:
+    - docker build -t $DOCKER_REGISTRY/$IMAGE_NAME .
+    - docker login -u $DOCKER_USER -p $DOCKER_PASS $DOCKER_REGISTRY
+    - docker push $DOCKER_REGISTRY/$IMAGE_NAME
     
 docker-deploy:
     stage: deploy
     before_script:
     - apk add openssh-client
     - mkdir -p ~/.ssh
-    - echo "$DEPLOY_SERVER_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
     - cat ~/.ssh/id_rsa
     - eval "$(ssh-agent -s)"
     - ssh-add ~/.ssh/id_rsa
     - ssh-keyscan -H $DEPLOY_SERVER >> ~/.ssh/known_hosts
     script:
-#        - echo $SSH_USER
-#        - echo $DEPLOY_SERVER
-        - ssh $SSH_USER:$SSH_PASSWORD@$DEPLOY_SERVER "docker login -u ${DOCKER_USER} -p ${DOCKER_PASS} ${DOCKER_REGISTRY}; docker pull ${DOCKER_REGISTRY}/${IMAGE_NAME}; docker stop ${IMAGE_NAME}; docker rm ${IMAGE_NAME}; docker run --name=${IMAGE_NAME} -p ${CONTAINER_PORT}:${CONTAINER_PORT} --restart=always"
+        - ssh $SSH_USER:$SSH_PASSWORD@$DEPLOY_SERVER "docker login -u ${DOCKER_USER} -p ${DOCKER_PASS} ${DOCKER_REGISTRY}; docker pull ${DOCKER_REGISTRY}/${IMAGE_NAME}; docker stop ${IMAGE_NAME}; docker rm ${IMAGE_NAME}; docker run --name=${IMAGE_NAME} -p ${CONTAINER_PORT}:${CONTAINER_PORT} --restart=always ${IMAGE_NAME}"
