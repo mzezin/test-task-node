@@ -70,7 +70,7 @@ var calculateAllocations = (data) => {
 }
 
 app.get('/', (req, res) => {
-    res.status(200).send('api')
+    res.status(200).send('mega-ci-api')
 })
 
 app.get('/:symbol', (req, res) => {
