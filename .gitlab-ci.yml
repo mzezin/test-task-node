@@ -34,4 +34,4 @@ docker-deploy:
     - ssh-add ~/.ssh/id_rsa
     - ssh-keyscan -H $DEPLOY_SERVER >> ~/.ssh/known_hosts
     script:
-        - ssh $SSH_USER:$SSH_PASSWORD@$DEPLOY_SERVER "docker login -u ${DOCKER_USER} -p ${DOCKER_PASS} ${DOCKER_REGISTRY}; docker pull ${DOCKER_REGISTRY}/${IMAGE_NAME}; docker stop ${IMAGE_NAME}; docker rm ${IMAGE_NAME}; docker run --name=${IMAGE_NAME} -p ${CONTAINER_PORT}:${CONTAINER_PORT} --restart=always ${IMAGE_NAME}"
+        - ssh $SSH_USER:$SSH_PASSWORD@$DEPLOY_SERVER "docker login -u ${DOCKER_USER} -p ${DOCKER_PASS} ${DOCKER_REGISTRY}; docker pull ${DOCKER_REGISTRY}/${IMAGE_NAME}; docker stop ${IMAGE_NAME}; docker rm ${IMAGE_NAME}; docker run --name=${IMAGE_NAME} -p ${CONTAINER_PORT}:${CONTAINER_PORT} --restart=always ${DOCKER_REGISTRY}/${IMAGE_NAME}"
