@@ -1,4 +1,4 @@
-image: docker:git
+image: docker:dind
 #pre_clone_script: apk add openssh-client
 services:
   - docker:dind
@@ -21,6 +21,7 @@ stages:
 docker-deploy:
     stage: deploy
     before_script:
+    - apk add openssh-client
     - mkdir -p ~/.ssh
     - echo "$DEPLOY_SERVER_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
