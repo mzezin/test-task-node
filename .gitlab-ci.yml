@@ -32,7 +32,7 @@ docker-deploy:
     script:
         - echo $SSH_USER
         - echo $DEPLOY_SERVER
-        - ssh -t $SSH_USER@$DEPLOY_SERVER 
+        - ssh -t $SSH_USER:$SSH_PASSWORD@$DEPLOY_SERVER 
         - docker login -u ${DOCKER_USER} -p ${DOCKER_PASS} ${DOCKER_REGISTRY}
         - docker pull ${DOCKER_REGISTRY}/${IMAGE_NAME}
         - docker stop ${IMAGE_NAME};docker rm ${IMAGE_NAME} 
