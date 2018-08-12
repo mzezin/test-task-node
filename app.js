@@ -70,7 +70,7 @@ var calculateAllocations = (data) => {
 }
 
 app.get('/', (req, res) => {
-    res.status(200).send('mega-ci-api')
+    res.status(200).send('try POST or GET /{ticker}')
 })
 
 app.get('/:symbol', (req, res) => {
@@ -79,7 +79,7 @@ app.get('/:symbol', (req, res) => {
 })
 
 app.post('/', (req, res) => {
-    if (req.body == undefined || req.body.stocks == undefined) {
+    if (req.body === undefined || req.body.stocks === undefined) {
         res.status(500).send('Internal server error: empty JSON')
     }
     enrichPositions(req.body)
